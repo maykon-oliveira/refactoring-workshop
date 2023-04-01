@@ -1,39 +1,23 @@
 package taxcalculator;
 
-import static taxcalculator.Role.*;
+import java.util.Set;
 
 public class TaxCalculator {
 
-    public double calculateTax(Employee employee) {
-        if(DEVELOPER.equals(employee.getRole())) {
-            return tenOrTwentyPercent(employee);
-        }
+	private final Set<TaxStrategy> taxes;
 
-        if(DBA.equals(employee.getRole()) || TESTER.equals(employee.getRole())) {
-            return fifteenOrTwentyFivePercent(employee);
-        }
+	public TaxCalculator(Set<TaxStrategy> taxes) {
+		this.taxes = taxes;
+	}
 
-        // ... and many more ...
+	public double calculateTax(Employee employee) {
+		for (TaxStrategy tax : taxes) {
+			if (tax.hasRequiredRoles(employee)) {
+				return tax.calculate(employee);
+			}
+		}
 
-        throw new RuntimeException("invalid employee");
-    }
-
-    private double tenOrTwentyPercent(Employee employee) {
-        if(employee.getBaseSalary() > 3000.0) {
-            return employee.getBaseSalary() * 0.8;
-        }
-        else {
-            return employee.getBaseSalary() * 0.9;
-        }
-    }
-
-    private double fifteenOrTwentyFivePercent(Employee employee) {
-        if(employee.getBaseSalary() > 2000.0) {
-            return employee.getBaseSalary() * 0.75;
-        }
-        else {
-            return employee.getBaseSalary() * 0.85;
-        }
-    }
+		throw new RuntimeException("invalid employee");
+	}
 
 }
