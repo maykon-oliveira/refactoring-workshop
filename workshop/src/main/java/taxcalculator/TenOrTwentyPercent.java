@@ -1,20 +1,11 @@
 package taxcalculator;
 
-import static taxcalculator.Role.DBA;
-import static taxcalculator.Role.TESTER;
+import java.util.Set;
 
-public class TenOrTwentyPercent implements TaxStrategy {
-	@Override
-	public boolean hasRequiredRoles(Employee employee) {
-		return DBA.equals(employee.getRole()) || TESTER.equals(employee.getRole());
+public class TenOrTwentyPercent extends AbstractTaxStrategy {
+
+	protected TenOrTwentyPercent() {
+		super(Set.of(Role.DBA, Role.TESTER), 3000.0, 0.8, 0.9);
 	}
 
-	@Override
-	public double calculate(Employee employee) {
-		if (employee.getBaseSalary() > 3000.0) {
-			return employee.getBaseSalary() * 0.8;
-		} else {
-			return employee.getBaseSalary() * 0.9;
-		}
-	}
 }
