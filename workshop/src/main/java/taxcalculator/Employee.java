@@ -18,6 +18,10 @@ public class Employee {
         this.baseSalary = baseSalary;
     }
 
+    public double calculateTax() {
+        return role.getTaxCalculator().calculate(this);
+    }
+
     public int getId() {
         return id;
     }
