@@ -1,5 +1,5 @@
 package invoicegenerator;
 
-public interface InvoiceRepository {
+public interface InvoiceRepository extends InvoiceConsumer {
     void persist(Invoice invoice);
 }
