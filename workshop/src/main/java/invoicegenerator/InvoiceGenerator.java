@@ -3,10 +3,11 @@ package invoicegenerator;
 import java.util.List;
 
 public class InvoiceGenerator {
-
+    private InvoiceTax invoiceTax;
     private final List<InvoiceConsumer> invoiceConsumers;
 
-    public InvoiceGenerator(List<InvoiceConsumer> invoiceConsumers) {
+    public InvoiceGenerator(InvoiceTax invoiceTax, List<InvoiceConsumer> invoiceConsumers) {
+        this.invoiceTax = invoiceTax;
         this.invoiceConsumers = invoiceConsumers;
     }
 
@@ -14,16 +15,12 @@ public class InvoiceGenerator {
 
         double amount = providedService.getMonthlyAmount();
 
-        Invoice nf = new Invoice(amount, simpleTax(amount));
+        Invoice nf = new Invoice(amount, invoiceTax.apply(amount));
 
         for (InvoiceConsumer consumer : invoiceConsumers) {
             consumer.accept(nf);
         }
 
         return nf;
-    }
-
-    private double simpleTax(double value) {
-        return value * 0.06;
     }
 }

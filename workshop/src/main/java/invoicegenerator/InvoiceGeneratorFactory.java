@@ -12,6 +12,6 @@ public class InvoiceGeneratorFactory {
 	}
 
 	public InvoiceGenerator build() {
-		return new InvoiceGenerator(Arrays.asList(email, dao));
+		return new InvoiceGenerator(new InvoiceTax(), Arrays.asList(email, dao));
 	}
 }
